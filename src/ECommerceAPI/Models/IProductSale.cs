@@ -1,6 +1,6 @@
 namespace ECommerceAPI.Models;
 
-public interface IProductSales
+public interface IProductSale
 {
     public int ProductId { get; set; }
     public IProduct Product { get; set; }
