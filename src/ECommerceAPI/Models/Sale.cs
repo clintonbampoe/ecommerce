@@ -6,5 +6,5 @@ public class Sale : ISale
     public double TotalAmount { get; set; }
     public DateTime OrderDate { get; set; } = DateTime.Now;
     
-    public ICollection<IProductSales> ProductSales { get; set; }
+    public ICollection<IProductSale> ProductSales { get; set; }
 }

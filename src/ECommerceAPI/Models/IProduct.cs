@@ -11,5 +11,5 @@ public interface IProduct
     public int CategoryId { get; set; }
     public ICategory Category { get; set; }
     
-    public ICollection<IProductSales> ProductSales { get; set; }
+    public ICollection<IProductSale> ProductSales { get; set; }
 }
