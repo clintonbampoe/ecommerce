@@ -1,10 +1,10 @@
 namespace ECommerceAPI.Models;
 
-public class Sale : ISale
+public class Sale
 {
     public int Id { get; set; }
     public double TotalAmount { get; set; }
     public DateTime OrderDate { get; set; } = DateTime.Now;
 
-    public ICollection<IProductSale> ProductSales { get; set; } = [];
+    public ICollection<ProductSale> ProductSales { get; set; } = [];
 }

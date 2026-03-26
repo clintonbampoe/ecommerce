@@ -19,23 +19,23 @@ public class AppDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         // composite key for IProductSale
-        modelBuilder.Entity<IProductSale>()
+        modelBuilder.Entity<ProductSale>()
             .HasKey(ps => new { ps.ProductId, ps.SalesId });
         
         // many-to-many : Product side
-        modelBuilder.Entity<IProductSale>()
+        modelBuilder.Entity<ProductSale>()
             .HasOne(ps => ps.Product)
             .WithMany(p => p.ProductSales)
             .HasForeignKey(ps => ps.ProductId);
         
         // many-to-many : Sale side
-        modelBuilder.Entity<IProductSale>()
+        modelBuilder.Entity<ProductSale>()
             .HasOne(ps => ps.Sale)
             .WithMany(s => s.ProductSales)
-            .HasForeignKey(ps => ps.Sale);
+            .HasForeignKey(ps => ps.SalesId);
         
         // one-to-many : mapping ICategory and IProduct
-        modelBuilder.Entity<IProduct>()
+        modelBuilder.Entity<Product>()
             .HasOne(p => p.Category)
             .WithMany(c => c.Products)
             .HasForeignKey(p => p.CategoryId);
