@@ -4,7 +4,7 @@ public class Sale
 {
     public int Id { get; set; }
     public double TotalAmount { get; set; }
-    public DateTime OrderDate { get; set; } = DateTime.Now;
+    public DateTime SaleDate { get; set; } = DateTime.Now;
 
     public ICollection<ProductSale> ProductSales { get; set; } = [];
 }

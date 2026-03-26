@@ -11,7 +11,7 @@ public class Product
     public DateTime DateAdded { get; set; }
     
     public int CategoryId { get; set; }
-    public required Category Category { get; set; }
+    public Category? Category { get; set; }
 
     public ICollection<ProductSale> ProductSales { get; set; } = [];
 }
