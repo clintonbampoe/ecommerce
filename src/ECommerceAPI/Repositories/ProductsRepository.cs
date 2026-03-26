@@ -13,7 +13,7 @@ public class ProductsRepository
         _dbContext = context;
     }
 
-    public async Task<IEnumerable<Product>> GetAllProducts()
+    public async Task<IEnumerable<Product>?> GetAllProducts()
     {
         var allProducts = await _dbContext.Products.ToListAsync();
         return allProducts;
@@ -28,7 +28,6 @@ public class ProductsRepository
 
     public async Task<Product?> GetProductById(int productId)
     {
-        // TODO: be sure to handle null reference in the services layer
         var product = await _dbContext.Products.FindAsync(productId);
         return product;
     }

@@ -13,7 +13,7 @@ public class CategoriesRepository
         _dbContext = context;
     }
 
-    public async Task<IEnumerable<Category>> GetAllCategories()
+    public async Task<IEnumerable<Category>?> GetAllCategories()
     {
         var allCategories = await _dbContext.Categories.ToListAsync();
         return allCategories;
@@ -28,7 +28,6 @@ public class CategoriesRepository
 
     public async Task<Category?> GetCategoryById(int categoryId)
     {
-        // TODO: be sure to handle possible null reference in services layer
         var category = await _dbContext.Categories.FindAsync(categoryId);
         return category;
     }
@@ -37,7 +36,6 @@ public class CategoriesRepository
     {
         var category = await _dbContext.Categories.FindAsync(categoryId);
 
-        // TODO: be sure to handle possible null reference in the services layer
         if (category is null)
         {
             return null;
