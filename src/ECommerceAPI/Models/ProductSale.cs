@@ -9,5 +9,5 @@ public class ProductSale
     public Sale? Sale { get; set; }
     
     public int Quantity { get; set; }
-    public int AppliedPrice { get; set; }
+    public int TotalCost { get; set; }
 }
