@@ -14,6 +14,16 @@ public class SalesRepository
         _dbContext = context;
     }
 
+    /*
+     * NOTE
+     * The ProductSale table is accessed from the SalesRepository.
+     * This is because every time a Sale object is created in the db, a ProductSale object is created immediately.
+     * Hence, ProductSale is mainly dependent on Sale so it did not make sense to make its own repo and service.
+     * Also, the client should only interact with the Sale service.
+     * This is also to make the SaleRepository the only point of entry and exit for the ProductSale table
+     * Due to all these reasons, the ProductSale table and its operations are accessed from this class.
+     */
+    
     public async Task<IEnumerable<ProductSaleDto>> GetAllProductSales()
     {
         var allProductSales = await _dbContext.ProductSales
@@ -58,14 +68,7 @@ public class SalesRepository
 
         return productSales;
     }
-
-    /*
-     * NOTE
-     * The ProductSale table is accessed from the SalesRepository.
-     * This is because every time a Sale object is created in the db, a ProductSale object is created immediately.
-     * Hence, ProductSale is mainly dependent on Sale so it did not make sense to make its own repo and service.
-     * Also, the client should only interact with the Sale service
-     */
+    
     public async Task<IEnumerable<ProductSaleDto>?> CreateProductSale(SalesCreateDto dto)
     {
         var newSale = new Sale()
