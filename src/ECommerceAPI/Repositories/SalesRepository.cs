@@ -14,9 +14,18 @@ public class SalesRepository
         _dbContext = context;
     }
 
-    public async Task<IEnumerable<ProductSale>> GetAllProductSales()
+    public async Task<IEnumerable<ProductSaleDto>> GetAllProductSales()
     {
-        var allProductSales = await _dbContext.ProductSales.ToListAsync();
+        var allProductSales = await _dbContext.ProductSales
+            .Select(ps => new ProductSaleDto()
+            {
+                ProductId = ps.ProductId,
+                SalesId = ps.SalesId,
+                ProductName = ps.Product != null ? ps.Product.Name : "Name not found",
+                TotalCost = ps.TotalCost,
+                SaleDate = ps.Sale != null ? ps.Sale.SaleDate : DateTime.Now
+            }).ToListAsync();
+        
         return allProductSales;
     }
 
@@ -35,7 +44,7 @@ public class SalesRepository
         return productSales;
     }
 
-    public async Task<IEnumerable<ProductSaleDto?>> GetProductSalesBySalesId(int salesId)
+    public async Task<IEnumerable<ProductSaleDto>?> GetProductSalesBySalesId(int salesId)
     {
         var productSales = await _dbContext.ProductSales
             .Where(ps => ps.SalesId == salesId)
@@ -51,12 +60,13 @@ public class SalesRepository
     }
 
     /*
+     * NOTE
      * The ProductSale table is accessed from the SalesRepository.
      * This is because every time a Sale object is created in the db, a ProductSale object is created immediately.
      * Hence, ProductSale is mainly dependent on Sale so it did not make sense to make its own repo and service.
      * Also, the client should only interact with the Sale service
      */
-    public async Task<IEnumerable<ProductSale>> CreateProductSale(SalesCreateDto dto)
+    public async Task<IEnumerable<ProductSaleDto>?> CreateProductSale(SalesCreateDto dto)
     {
         var newSale = new Sale()
         {
@@ -65,14 +75,22 @@ public class SalesRepository
             ProductSales = dto.Items.Select(item => new ProductSale()
             {
                 ProductId = item.ProductId,
-                Quantity = item.Quantity,
+                Quantity = item.Quantity
             }).ToList()
         };
 
         _dbContext.Sales.Add(newSale);
         await _dbContext.SaveChangesAsync();
 
+        
         return await _dbContext.ProductSales
-            .Where(ps => ps.SalesId == newSale.Id).ToListAsync();
+            .Where(ps => ps.SalesId == newSale.Id)
+            .Select(ps => new ProductSaleDto()
+            {
+                ProductId = ps.ProductId,
+                SalesId = ps.SalesId,
+                Quantity = ps.Quantity,
+                TotalCost = ps.TotalCost
+            }).ToListAsync();
     }
 }
