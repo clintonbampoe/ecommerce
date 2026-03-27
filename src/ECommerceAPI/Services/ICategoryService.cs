@@ -1,11 +1,12 @@
 using ECommerceAPI.Models;
+using ECommerceAPI.Models.Dtos;
 
 namespace ECommerceAPI.Services;
 
 public interface ICategoryService
 {
-    Task<IEnumerable<Category>> GetAllCategories();
-    Task<Category?> GetCategoryById(int categoryId);
-    Task<Category> CreateCategory(Category category);
-    Task<Category?> UpdateCategory(int categoryId, Category updatedCategory);
+    Task<IEnumerable<CategoryDto>> GetAllCategories();
+    Task<CategoryDto?> GetCategoryById(int categoryId);
+    Task<CategoryDto> CreateCategory(CategoryDto dto);
+    Task<CategoryDto?> UpdateCategory(int categoryId, CategoryDto dto);
 }
