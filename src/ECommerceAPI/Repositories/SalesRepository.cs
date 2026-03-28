@@ -24,52 +24,26 @@ public class SalesRepository
      * Due to all these reasons, the ProductSale table and its operations are accessed from this class.
      */
     
-    public async Task<IEnumerable<ProductSaleDto>> GetAllProductSales()
+    public async Task<IEnumerable<ProductSale>> GetAllProductSales()
     {
-        var allProductSales = await _dbContext.ProductSales
-            .Select(ps => new ProductSaleDto()
-            {
-                ProductId = ps.ProductId,
-                SalesId = ps.SalesId,
-                ProductName = ps.Product != null ? ps.Product.Name : "Name not found",
-                TotalCost = ps.TotalCost,
-                SaleDate = ps.Sale != null ? ps.Sale.SaleDate : DateTime.Now
-            }).ToListAsync();
-        
+        var allProductSales = await _dbContext.ProductSales.ToListAsync();
         return allProductSales;
+        
     }
 
-    public async Task<IEnumerable<ProductSaleDto>?> GetProductSalesByProductId(int productId)
+    public async Task<IEnumerable<ProductSale>?> GetProductSalesByProductId(int productId)
     {
-        var productSales = await _dbContext.ProductSales
-            .Where(ps => ps.ProductId == productId)
-            .Select(ps => new ProductSaleDto()
-            {
-                ProductId = ps.ProductId,
-                SalesId = ps.SalesId,
-                ProductName = ps.Product != null ? ps.Product.Name : "Name Not Found",
-                TotalCost = ps.TotalCost
-            }).ToListAsync();
-
+        var productSales = await _dbContext.ProductSales.ToListAsync();
         return productSales;
     }
 
-    public async Task<IEnumerable<ProductSaleDto>?> GetProductSalesBySalesId(int salesId)
+    public async Task<IEnumerable<ProductSale>?> GetProductSalesBySalesId(int salesId)
     {
-        var productSales = await _dbContext.ProductSales
-            .Where(ps => ps.SalesId == salesId)
-            .Select(ps => new ProductSaleDto()
-            {
-                ProductId = ps.ProductId,
-                SalesId = ps.SalesId,
-                SaleDate = ps.Sale != null ? ps.Sale.SaleDate : DateTime.Now,
-                TotalCost = ps.TotalCost
-            }).ToListAsync();
-
+        var productSales = await _dbContext.ProductSales.ToListAsync();
         return productSales;
     }
     
-    public async Task<IEnumerable<ProductSaleDto>?> CreateProductSale(SalesCreateDto dto)
+    public async Task<IEnumerable<ProductSale>?> CreateProductSale(SalesCreateDto dto)
     {
         var newSale = new Sale()
         {
@@ -86,14 +60,6 @@ public class SalesRepository
         await _dbContext.SaveChangesAsync();
 
         
-        return await _dbContext.ProductSales
-            .Where(ps => ps.SalesId == newSale.Id)
-            .Select(ps => new ProductSaleDto()
-            {
-                ProductId = ps.ProductId,
-                SalesId = ps.SalesId,
-                Quantity = ps.Quantity,
-                TotalCost = ps.TotalCost
-            }).ToListAsync();
+        return await _dbContext.ProductSales.ToListAsync();
     }
 }
