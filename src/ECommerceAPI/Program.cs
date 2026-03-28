@@ -12,7 +12,9 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<CategoriesRepository>();
-builder.Services.AddScoped<CategoryService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<ProductsRepository>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 
 var app = builder.Build();
