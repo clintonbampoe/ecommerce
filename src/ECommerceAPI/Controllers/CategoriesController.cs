@@ -8,9 +8,9 @@ namespace ECommerceAPI.Controllers
     [ApiController]
     public class CategoriesController : ControllerBase
     {
-        private readonly CategoryService _service;
+        private readonly ICategoryService _service;
 
-        public CategoriesController(CategoryService service)
+        public CategoriesController(ICategoryService service)
         {
             _service = service;
         }
