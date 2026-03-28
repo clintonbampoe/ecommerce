@@ -6,8 +6,21 @@ public class ProductSaleDto
     public int SalesId { get; set; }
     
     public int Quantity { get; set; }
-    public decimal TotalCost { get; set; }
+    public double TotalCost { get; set; }
 
-    public string ProductName { get; set; } = string.Empty;
     public DateTime SaleDate { get; set; }
+
+    public ProductSaleDto()
+    {
+        
+    }
+
+    public ProductSaleDto(ProductSale productSale)
+    {
+        ProductId = productSale.ProductId;
+        SalesId = productSale.SalesId;
+        Quantity = productSale.Quantity;
+        TotalCost = productSale.TotalCost;
+        SaleDate = productSale.SaleDate;
+    }
 }
