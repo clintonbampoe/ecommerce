@@ -7,7 +7,7 @@ public class Product
 {
     public int Id { get; set; }
     [MaxLength(64)] public string Name { get; set; } = string.Empty;
-    public decimal Price { get; set; }
+    public double Price { get; set; }
     public int QuantityInStock { get; set; }
     public DateTime DateAdded { get; set; }
     
