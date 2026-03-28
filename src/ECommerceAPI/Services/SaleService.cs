@@ -19,35 +19,35 @@ public class SaleService : ISaleService
      * The controller is supposed to handle this gracefully.
      * That is: it should print a meaningful message if it receives an empty list and the normal response if otherwise
      */
-    
+
     public async Task<IEnumerable<ProductSaleDto>?> GetByProductId(int productId)
     {
-        var sale = await _repository.GetProductSalesByProductId(productId);
+        var sales = await _repository.GetProductSalesByProductId(productId);
 
-        if (sale is null)
+        if (sales is null)
         {
             return [];
         }
 
-        return sale;
+        return sales.Select(sale => new ProductSaleDto(sale));
     }
 
     public async Task<IEnumerable<ProductSaleDto>?> GetBySaleId(int salesId)
     {
-        var sale = await _repository.GetProductSalesBySalesId(salesId);
+        var sales = await _repository.GetProductSalesBySalesId(salesId);
 
-        if (sale is null)
+        if (sales is null)
         {
             return [];
         }
 
-        return sale;
+        return sales.Select(sale => new ProductSaleDto(sale));
     }
 
     public async Task<IEnumerable<ProductSaleDto>?> GetAll()
     {
         var allSales = await _repository.GetAllProductSales();
-        return allSales;
+        return allSales.Select(sale => new ProductSaleDto(sale));
     }
 
     public async Task<IEnumerable<ProductSaleDto>> PostNewEntry(SalesCreateDto dto)
@@ -59,6 +59,6 @@ public class SaleService : ISaleService
             return [];
         }
 
-        return entries;
+        return entries.Select(entry => new ProductSaleDto(entry));
     }
 }
