@@ -1,4 +1,5 @@
 using ECommerceAPI.Models;
+using ECommerceAPI.Models.Dtos;
 using ECommerceAPI.Repositories;
 
 namespace ECommerceAPI.Services;
@@ -21,7 +22,7 @@ public class ProductService : IProductService
      */
     
     
-    public async Task<IEnumerable<Product?>> GetAllProducts()
+    public async Task<IEnumerable<ProductDto?>> GetAllProducts()
     {
         var allProducts = await _repository.GetAllProducts();
 
@@ -29,11 +30,11 @@ public class ProductService : IProductService
         {
             return [];
         }
-
-        return allProducts;
+        
+        return allProducts.Select(product => new ProductDto(product));
     }
 
-    public async Task<Product?> GetProductById(int productId)
+    public async Task<ProductDto?> GetProductById(int productId)
     {
         var product = await _repository.GetProductById(productId);
 
@@ -42,12 +43,12 @@ public class ProductService : IProductService
             return null;
         }
 
-        return product;
+        return new ProductDto(product);
     }
     
-    public async Task<Product> CreateProduct(Product product)
+    public async Task<ProductDto> CreateProduct(ProductDto product)
     {
-        await _repository.CreateProduct(product);
-        return product;
+        await _repository.CreateProduct(new Product(product));
+        return new ProductDto(new Product(product));
     }
 }
