@@ -1,6 +1,6 @@
 namespace ECommerceAPI.Models.Dto;
 
-public class ProductSaleDto
+public class ProductSaleDto : IProductSale
 {
     public int ProductId { get; set; }
     public int SalesId { get; set; }

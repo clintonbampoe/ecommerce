@@ -2,7 +2,7 @@ using ECommerceAPI.Models.Dto;
 
 namespace ECommerceAPI.Models;
 
-public class ProductSale
+public class ProductSale : IProductSale
 {
     public int ProductId { get; set; }
     public Product? Product { get; set; }
