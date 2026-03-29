@@ -1,6 +1,6 @@
 namespace ECommerceAPI.Models.Dto;
 
-public class CategoryDto
+public class CategoryDto : ICategory
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
