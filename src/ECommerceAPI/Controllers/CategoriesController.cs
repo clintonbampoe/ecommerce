@@ -1,4 +1,5 @@
 using ECommerceAPI.Models.Dto;
+using ECommerceAPI.Models.Pagination;
 using Microsoft.AspNetCore.Mvc;
 using ECommerceAPI.Services;
 
@@ -17,9 +18,9 @@ namespace ECommerceAPI.Controllers
 
         // GET: api/Categories
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
+        public async Task<ActionResult<PagedResponse<CategoryDto>>> GetCategories([FromQuery] PaginationParams paginationParams)
         {
-            return Ok(await _service.GetAllCategories());
+            return Ok(await _service.GetAllCategories(paginationParams));
         }
 
         // GET: api/Categories/{id}
