@@ -1,6 +1,7 @@
 using ECommerceAPI.Data;
 using ECommerceAPI.Models;
 using ECommerceAPI.Models.Dto;
+using ECommerceAPI.Models.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceAPI.Repositories;
@@ -24,23 +25,56 @@ public class SalesRepository
      * Due to all these reasons, the ProductSale table and its operations are accessed from this class.
      */
     
-    public async Task<IEnumerable<ProductSale>> GetAllProductSales()
+    public async Task<PagedResponse<ProductSale>> GetAllProductSales(PaginationParams paginationParams)
     {
-        var allProductSales = await _dbContext.ProductSales.ToListAsync();
-        return allProductSales;
+        var totalRecords = await _dbContext.ProductSales
+            .CountAsync();
+
+        var productSales = await _dbContext.ProductSales
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
+            .ToListAsync();
+        
+        return new PagedResponse<ProductSale>(productSales, paginationParams.PageNumber, paginationParams.PageSize, totalRecords);
         
     }
 
-    public async Task<IEnumerable<ProductSale>?> GetProductSalesByProductId(int productId)
+    public async Task<PagedResponse<ProductSale>> GetProductSalesByProductId(int productId, PaginationParams paginationParams)
     {
-        var productSales = await _dbContext.ProductSales.ToListAsync();
-        return productSales;
+        var totalRecords = await _dbContext.ProductSales
+            .Where(p => p.ProductId == productId)
+            .CountAsync();
+
+        var productSalesByProductId = await _dbContext.ProductSales
+            .AsNoTracking()
+            .Where(ps => ps.ProductId == productId)
+            .OrderBy(ps => ps.ProductId)
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
+            .ToListAsync();
+
+        var response = new PagedResponse<ProductSale>(productSalesByProductId, paginationParams.PageNumber,
+            paginationParams.PageSize, totalRecords);
+        return response;
     }
 
-    public async Task<IEnumerable<ProductSale>?> GetProductSalesBySalesId(int salesId)
+    public async Task<PagedResponse<ProductSale>> GetProductSalesBySalesId(int salesId, PaginationParams paginationParams)
     {
-        var productSales = await _dbContext.ProductSales.ToListAsync();
-        return productSales;
+        var totalRecords = await _dbContext.ProductSales
+            .Where(ps => ps.SalesId == salesId)
+            .CountAsync();
+
+        var productSalesBySalesId = await _dbContext.ProductSales
+            .AsNoTracking()
+            .Where(ps => ps.SalesId == salesId)
+            .OrderBy(ps => ps.SalesId)
+            .Skip((paginationParams.PageNumber - 1) * paginationParams.PageSize)
+            .Take(paginationParams.PageSize)
+            .ToListAsync();
+
+        var response = new PagedResponse<ProductSale>(productSalesBySalesId, paginationParams.PageNumber,
+            paginationParams.PageSize, totalRecords);
+        return response;
     }
     
     public async Task<IEnumerable<ProductSale>?> CreateProductSale(SalesCreateDto dto)

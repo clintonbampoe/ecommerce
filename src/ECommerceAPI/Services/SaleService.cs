@@ -1,4 +1,6 @@
+using ECommerceAPI.Models;
 using ECommerceAPI.Models.Dto;
+using ECommerceAPI.Models.Pagination;
 using ECommerceAPI.Repositories;
 
 namespace ECommerceAPI.Services;
@@ -20,34 +22,25 @@ public class SaleService : ISaleService
      * That is: it should print a meaningful message if it receives an empty list and the normal response if otherwise
      */
 
-    public async Task<IEnumerable<ProductSaleDto>?> GetByProductId(int productId)
+    public async Task<PagedResponse<ProductSaleDto>> GetByProductId(int productId, PaginationParams paginationParams)
     {
-        var sales = await _repository.GetProductSalesByProductId(productId);
+        var sales = await _repository.GetProductSalesByProductId(productId, paginationParams);
 
-        if (sales is null)
-        {
-            return [];
-        }
-
-        return sales.Select(sale => new ProductSaleDto(sale));
+        return ConvertRawObjectsFromPagedResponseToDto(sales);
     }
 
-    public async Task<IEnumerable<ProductSaleDto>?> GetBySaleId(int salesId)
+    public async Task<PagedResponse<ProductSaleDto>> GetBySaleId(int salesId, PaginationParams paginationParams)
     {
-        var sales = await _repository.GetProductSalesBySalesId(salesId);
+        var sales = await _repository.GetProductSalesBySalesId(salesId, paginationParams);
 
-        if (sales is null)
-        {
-            return [];
-        }
-
-        return sales.Select(sale => new ProductSaleDto(sale));
+        return ConvertRawObjectsFromPagedResponseToDto(sales);
     }
 
-    public async Task<IEnumerable<ProductSaleDto>?> GetAll()
+    public async Task<PagedResponse<ProductSaleDto>> GetAll(PaginationParams paginationParams)
     {
-        var allSales = await _repository.GetAllProductSales();
-        return allSales.Select(sale => new ProductSaleDto(sale));
+        var sales = await _repository.GetAllProductSales(paginationParams);
+
+        return ConvertRawObjectsFromPagedResponseToDto(sales);
     }
 
     public async Task<IEnumerable<ProductSaleDto>> PostNewEntry(SalesCreateDto dto)
@@ -60,5 +53,14 @@ public class SaleService : ISaleService
         }
 
         return entries.Select(entry => new ProductSaleDto(entry));
+    }
+
+    private PagedResponse<ProductSaleDto> ConvertRawObjectsFromPagedResponseToDto(PagedResponse<ProductSale> sales)
+    {
+        var dtos = sales.Data
+            .Select(ps => new ProductSaleDto(ps))
+            .ToList();
+
+        return new PagedResponse<ProductSaleDto>(dtos, sales.PageNumber, sales.PageSize, sales.TotalRecords);
     }
 }
