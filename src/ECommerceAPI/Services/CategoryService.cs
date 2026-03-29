@@ -1,5 +1,6 @@
 using ECommerceAPI.Models;
 using ECommerceAPI.Models.Dto;
+using ECommerceAPI.Models.Pagination;
 using ECommerceAPI.Repositories;
 
 namespace ECommerceAPI.Services;
@@ -22,17 +23,14 @@ public class CategoryService : ICategoryService
      * That is: it should print a meaningful message if it receives an empty list and the normal response if otherwise
      */
     
-    public async Task<IEnumerable<CategoryDto>> GetAllCategories()
+    public async Task<PagedResponse<CategoryDto>> GetAllCategories(PaginationParams paginationParams)
     {
-        var allCategories = await _repository.GetAllCategories();
+        var categories = await _repository.GetAllCategories(paginationParams);
 
-        if (allCategories is null)
-        {
-            return [];
-        }
+        var dtos = categories.Data.Select(category => new CategoryDto(category));
 
-        // serialize object response into DTOs
-        return allCategories.Select(cItem => new CategoryDto(cItem)).ToList();
+        
+        return new PagedResponse<CategoryDto>(dtos, categories.PageNumber, categories.PageSize, categories.TotalRecords);
     }
 
     public async Task<CategoryDto?> GetCategoryById(int categoryId)
