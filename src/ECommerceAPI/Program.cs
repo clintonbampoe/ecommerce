@@ -9,11 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSwaggerGen();
 builder.Services.AddOpenApi();
 builder.Services.AddControllers();
+
 builder.Services.AddDbContext<AppDbContext>(opt =>
     opt.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 builder.Services.AddScoped<CategoriesRepository>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<ProductsRepository>();
+builder.Services.AddScoped<SalesRepository>();
+
+builder.Services.AddScoped<ISaleService, SaleService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
 
