@@ -3,7 +3,7 @@ using ECommerceAPI.Models.Dto;
 
 namespace ECommerceAPI.Models;
 
-public class Product
+public class Product : IProduct
 {
     public int Id { get; set; }
     [MaxLength(64)] public string Name { get; set; } = string.Empty;

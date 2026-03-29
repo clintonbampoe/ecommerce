@@ -1,6 +1,6 @@
 namespace ECommerceAPI.Models.Dto;
 
-public class ProductDto
+public class ProductDto : IProduct
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
