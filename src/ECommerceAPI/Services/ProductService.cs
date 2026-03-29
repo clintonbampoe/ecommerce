@@ -1,5 +1,6 @@
 using ECommerceAPI.Models;
 using ECommerceAPI.Models.Dto;
+using ECommerceAPI.Models.Pagination;
 using ECommerceAPI.Repositories;
 
 namespace ECommerceAPI.Services;
@@ -22,16 +23,14 @@ public class ProductService : IProductService
      */
     
     
-    public async Task<IEnumerable<ProductDto?>> GetAllProducts()
+    public async Task<PagedResponse<ProductDto>> GetAllProducts(PaginationParams paginationParams)
     {
-        var allProducts = await _repository.GetAllProducts();
+        var products = await _repository.GetAllProducts(paginationParams);
 
-        if (allProducts is null)
-        {
-            return [];
-        }
-        
-        return allProducts.Select(product => new ProductDto(product));
+        var dtos = products.Data.Select(product => new ProductDto(product));
+
+        var response = new PagedResponse<ProductDto>(dtos, products.PageNumber, products.PageSize, products.TotalRecords);
+        return response;
     }
 
     public async Task<ProductDto?> GetProductById(int productId)
