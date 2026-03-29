@@ -1,6 +1,6 @@
 using ECommerceAPI.Data;
 using ECommerceAPI.Models;
-using ECommerceAPI.Models.Dtos;
+using ECommerceAPI.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceAPI.Repositories;

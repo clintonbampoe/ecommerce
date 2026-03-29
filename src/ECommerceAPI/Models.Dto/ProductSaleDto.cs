@@ -1,4 +1,4 @@
-namespace ECommerceAPI.Models.Dtos;
+namespace ECommerceAPI.Models.Dto;
 
 public class ProductSaleDto
 {

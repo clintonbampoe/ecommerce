@@ -1,5 +1,5 @@
 using System.ComponentModel.DataAnnotations;
-using ECommerceAPI.Models.Dtos;
+using ECommerceAPI.Models.Dto;
 
 namespace ECommerceAPI.Models;
 

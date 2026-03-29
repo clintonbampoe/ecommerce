@@ -1,4 +1,4 @@
-using ECommerceAPI.Models.Dtos;
+using ECommerceAPI.Models.Dto;
 using ECommerceAPI.Repositories;
 
 namespace ECommerceAPI.Services;

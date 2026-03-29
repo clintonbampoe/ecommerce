@@ -1,5 +1,5 @@
 using ECommerceAPI.Models;
-using ECommerceAPI.Models.Dtos;
+using ECommerceAPI.Models.Dto;
 
 namespace ECommerceAPI.Services;
 
