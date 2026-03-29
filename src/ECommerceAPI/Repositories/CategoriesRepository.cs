@@ -1,5 +1,6 @@
 using ECommerceAPI.Data;
 using ECommerceAPI.Models;
+using ECommerceAPI.Models.Pagination;
 using Microsoft.EntityFrameworkCore;
 
 namespace ECommerceAPI.Repositories;
@@ -13,10 +14,17 @@ public class CategoriesRepository
         _dbContext = context;
     }
 
-    public async Task<IEnumerable<Category>?> GetAllCategories()
+    public async Task<PagedResponse<Category>> GetAllCategories(PaginationParams parameters)
     {
-        var allCategories = await _dbContext.Categories.ToListAsync();
-        return allCategories;
+        var totalRecords = await _dbContext.Categories.CountAsync();
+        var categories = await _dbContext.Categories.Skip((parameters.PageNumber - 1) * parameters.PageSize)
+            .Take(parameters.PageSize)
+            .ToListAsync();
+
+        var pagedResponse =
+            new PagedResponse<Category>(categories, parameters.PageNumber, parameters.PageSize, totalRecords);
+
+        return pagedResponse;
     }
 
     public async Task<Category> CreateCategory(Category category)
