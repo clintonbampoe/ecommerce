@@ -1,6 +1,6 @@
 namespace ECommerceAPI.Models;
 
-public class Sale
+public class Sale : ISale
 {
     public int Id { get; set; }
     public double TotalAmount { get; set; }
